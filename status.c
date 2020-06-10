@@ -7,6 +7,8 @@
 #include <unistd.h> 
 #include <ncurses.h> 
 
+float MERThreshold = 0;
+
 void display_percent(int id, char *meaning, int value)
 {
 	mvprintw(2+id,0,"%s: %.2f %%\n",meaning,(float)value/100);
@@ -14,7 +16,7 @@ void display_percent(int id, char *meaning, int value)
 
 void display_mer(int id, char *meaning, int value)
 {
-	mvprintw(2+id,0,"%s: %.1f dB\n",meaning,(float)value/10);
+	mvprintw(2+id,0,"%s: %.1f dB (need %.1f dB)\n",meaning,(float)value/10,MERThreshold);
 }
 
 void display_yes_no(int id, char *meaning, int value)
@@ -55,6 +57,8 @@ void display_modcod_s(int id, char *meaning, int value)
 	} else {
 		mvprintw(2+id,0,"%s: %d\n",meaning,value);
 	}
+
+	MERThreshold = 0;
 }
 
 void display_modcod_s2(int id, char *meaning, int value)
@@ -91,10 +95,52 @@ void display_modcod_s2(int id, char *meaning, int value)
 		"32APSK 9/10"
 	};
 
+	/* MER threshold values from
+	 * https://github.com/davecrump/portsdown-buster/blob/master/src/gui/rpidatvtouch.c
+	 */
+
+	static float MER_threshold[] = {
+		0,
+		-2.3,
+		-1.2,
+		-0.3,
+		1.0,
+		2.3,
+		3.1,
+		4.1,
+		4.7,
+		5.2,
+		6.2,
+		6.5,
+		5.5,
+		6.6,
+		7.9,
+		9.4,
+		10.7,
+		11.0,
+		9.0,
+		10.2,
+		11.0,
+		11.6,
+		12.9,
+		13.2,
+		12.8,
+		13.7,
+		14.3,
+		15.7,
+		16.1,
+	};
+
 	if (value <  sizeof(modcod)/sizeof(*modcod)) {
 		mvprintw(2+id,0,"%s: %s\n",meaning,modcod[value]);
 	} else {
 		mvprintw(2+id,0,"%s: %d\n",meaning,value);
+	}
+
+	if (value <  sizeof(MER_threshold)/sizeof(*MER_threshold)) {
+		MERThreshold = MER_threshold[value];
+	} else {
+		MERThreshold = 0;
 	}
 }
 
