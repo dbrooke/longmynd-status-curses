@@ -238,7 +238,7 @@ int main() {
 
 	mvprintw(1,0,"LongMynd DATV Receiver Status\n");
 
-	scroll_win = newwin(LINES - 70, COLS, 70, 0);
+	scroll_win = newwin(LINES - 1, COLS, 1, 0);
 	scrollok(scroll_win, TRUE);
 
 	wprintw(scroll_win,"Listening\n");
