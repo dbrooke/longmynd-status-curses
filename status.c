@@ -174,7 +174,9 @@ void display_status(int id, char *value)
 		"BCH Error Count",
 		"BCH Uncorrected",
 		"LNB Voltage Enabled",
-		"LNB H Polarisation"
+		"LNB H Polarisation",
+		"AGC1 Gain",
+		"AGC2 Gain"
 	};
 
 	if (id < sizeof(meaning)/sizeof(*meaning)) {
